@@ -25,3 +25,53 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('There has been a problem with your fetch operation:', error));
     });
 });
+
+async function fetchCategories() {
+    // Fetch ingredient categories
+    const ingredientResponse = await fetch('http://localhost:3000/ingredient-categories');
+    const ingredientCategories = await ingredientResponse.json();
+    const ingredientSelect = document.getElementById('ingredientCategorySelect');
+    ingredientCategories.forEach(category => {
+        let option = document.createElement('option');
+        option.value = category._id;
+        option.innerText = category.name;
+        ingredientSelect.appendChild(option);
+    });
+
+    // Fetch recipe categories
+    const recipeResponse = await fetch('http://localhost:3000/recipe-categories');
+    const recipeCategories = await recipeResponse.json();
+    const recipeSelect = document.getElementById('recipeCategorySelect');
+    recipeCategories.forEach(category => {
+        let option = document.createElement('option');
+        option.value = category._id;
+        option.innerText = category.name;
+        recipeSelect.appendChild(option);
+    });
+}
+
+async function fetchFilteredRecipes() {
+    const ingredientCategoryId = document.getElementById('ingredientCategorySelect').value;
+    const recipeCategoryId = document.getElementById('recipeCategorySelect').value;
+    const query = new URLSearchParams({
+        ingredientCategory: ingredientCategoryId,
+        recipeCategory: recipeCategoryId
+    }).toString();
+    const response = await fetch(`http://localhost:3000/recipes?${query}`);
+    const filteredRecipes = await response.json();
+    displayRecipes(filteredRecipes);
+}
+
+function displayRecipes(recipes) {
+    const container = document.getElementById('recipesList');
+    container.innerHTML = ''; // Clear previous contents
+    recipes.forEach(recipe => {
+        const recipeDiv = document.createElement('div');
+        recipeDiv.innerHTML = `<h3>${recipe.name}</h3><p>${recipe.description}</p>`;
+        container.appendChild(recipeDiv);
+    });
+}
+
+// Load categories on page load
+fetchCategories();
+
