@@ -9,20 +9,18 @@
     <h1>Recipe Book</h1>
     <button id="browseRecipes">Browse Recipes</button>
     <div id="recipesList"></div>
+    <div id="recipeDetails" style="display: none;"></div>
     <script src="app.js"></script>
-
     <div>
-        <select id="ingredientCategorySelect">
-            <option value="">Select Ingredient Category</option>
-            <!-- Options will be dynamically added here -->
-        </select>
         <select id="recipeCategorySelect">
             <option value="">Select Recipe Category</option>
-            <!-- Options will be dynamically added here -->
         </select>
-        <button onclick="fetchFilteredRecipes()">Apply Filter</button>
+        <button id="filterButton">Apply Filter</button>
     </div>
     <div id="recipesList"></div>
+    <div id="recipeDetails" style="display: none;"></div>
     
 </body>
 </html>
+
+

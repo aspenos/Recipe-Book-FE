@@ -8,3 +8,9 @@ body {
     padding: 10px;
     border-radius: 5px;
 }
+
+.recipe-name {
+    cursor: pointer;
+    color: blue; 
+    text-decoration: underline;
+}
