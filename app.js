@@ -75,3 +75,70 @@ function displayRecipeDetails(recipe) {
     detailsDiv.style.display = 'block';
     window.location.href = '#recipeDetails'; // Scrolls to the details section
 }
+
+document.getElementById('show-login').addEventListener('click', function() {
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('signup-form').style.display = 'none';
+});
+
+// Show Signup Form
+document.getElementById('show-signup').addEventListener('click', function() {
+    document.getElementById('signup-form').style.display = 'block';
+    document.getElementById('login-form').style.display = 'none';
+});
+
+// Handle Login Submission
+document.getElementById('login-submit').addEventListener('click', function() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    fetch('http://localhost:3000/users/login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+})
+.then(response => response.json())
+.then(data => {
+    if(data.token) {
+        // Store the token for future requests
+        sessionStorage.setItem('token', data.token);
+        // Redirect the user or update UI
+        alert('Logged in successfully!');
+    } else {
+        // Handle any errors, such as login failure
+        alert('Failed to log in. Please check your credentials.');
+    }
+})
+.catch(error => {
+    console.error('Error during login:', error);
+});
+});
+
+// Handle Signup Submission
+document.getElementById('signup-submit').addEventListener('click', function() {
+    const username = document.getElementById('signup-username').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    fetch('http://localhost:3000/users/signup', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, email, password })
+})
+.then(response => response.json())
+.then(data => {
+    if(data.message) {
+        // Handle successful signup, such as redirecting to login
+        alert('Signed up successfully! Please log in.');
+    } else {
+        // Handle any signup errors
+        alert('Failed to sign up. Please try again.');
+    }
+})
+.catch(error => {
+    console.error('Error during signup:', error);
+});
+});
+

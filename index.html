@@ -8,18 +8,33 @@
 <body>
     <h1>Recipe Book</h1>
     <button id="browseRecipes">Browse Recipes</button>
-    <div id="recipesList"></div>
-    <div id="recipeDetails" style="display: none;"></div>
-    <script src="app.js"></script>
-    <div>
+    <div id="recipesList"></div> <!-- Make sure each ID is unique -->
+
+    <div id="login-form" style="display:none;">
+        <input type="email" id="login-email" placeholder="Enter your email">
+        <input type="password" id="login-password" placeholder="Enter your password">
+        <button id="login-submit">Login</button>
+    </div>
+
+    <div id="signup-form" style="display:none;">
+        <input type="text" id="signup-username" placeholder="Choose a username">
+        <input type="email" id="signup-email" placeholder="Enter your email">
+        <input type="password" id="signup-password" placeholder="Create a password">
+        <button id="signup-submit">Signup</button>
+    </div>
+
+    <button id="show-login">Login</button>
+    <button id="show-signup">Signup</button>
+    
+    <div id="filterOptions">
         <select id="recipeCategorySelect">
             <option value="">Select Recipe Category</option>
         </select>
         <button id="filterButton">Apply Filter</button>
     </div>
-    <div id="recipesList"></div>
-    <div id="recipeDetails" style="display: none;"></div>
-    
+    <div id="recipeDetails" style="display: none;"></div> <!-- Ensure this is unique -->
+
+    <script src="app.js"></script>
 </body>
 </html>
 
