@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('signup-form').style.display = 'none';
     document.getElementById('show-login').style.display = 'none';
     document.getElementById('show-signup').style.display = 'block';
+    document.getElementById('profileButton').style.display = 'block';
 });
 
  // Show Signup Form
@@ -92,6 +93,7 @@ document.getElementById('logoutButton').addEventListener('click', function() {
     document.getElementById('logoutButton').style.display = 'none';
     document.getElementById('show-login').style.display = 'block';
     document.getElementById('show-signup').style.display = 'block';
+    document.getElementById('profileButton').style.display = 'none';
 
     // Optionally redirect the user
     window.location.href = '/'; // Redirects to the home page
@@ -192,5 +194,63 @@ function addFavorite(recipeId) {
     .catch(error => {
         console.error('Error adding favorite:', error);
         alert('Failed to add favorite. Please try again.');
+    });
+}
+
+function showProfile() {
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token');
+    if (userId && token) {
+        document.getElementById('userProfile').style.display = 'block';
+        fetchUserRecipes(userId, token);
+        fetchUserFavorites(userId, token);
+    } else {
+        alert("You are not logged in.");
+    }
+}
+
+function fetchUserRecipes(userId, token) {
+    fetch(`http://localhost:3000/users/${userId}/recipes`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(recipes => {
+        displayUserRecipes(recipes);
+    })
+    .catch(error => console.error('Error fetching user recipes:', error));
+}
+
+function displayUserRecipes(recipes) {
+    const container = document.getElementById('userRecipesList');
+    container.innerHTML = ''; // Clear previous contents
+    recipes.forEach(recipe => {
+        const div = document.createElement('div');
+        div.innerHTML = `<h4>${recipe.name}</h4><p>${recipe.description}</p>`;
+        container.appendChild(div);
+    });
+}
+
+function fetchUserFavorites(userId, token) {
+    fetch(`http://localhost:3000/users/${userId}/favorites`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(favorites => {
+        displayUserFavorites(favorites);
+    })
+    .catch(error => console.error('Error fetching favorites:', error));
+}
+
+function displayUserFavorites(favorites) {
+    const container = document.getElementById('userFavoritesList');
+    container.innerHTML = ''; // Clear previous contents
+    favorites.forEach(favorite => {
+        const div = document.createElement('div');
+        div.innerHTML = `<h4>${favorite.name}</h4><p>${favorite.description}</p>`;
+        container.appendChild(div);
     });
 }

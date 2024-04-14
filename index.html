@@ -26,8 +26,21 @@
     <button id="show-login" style="display:block;">Show Login Form</button>
     <button id="show-signup" style="display:block;">Show Signup Form</button>
     <button id="logoutButton" style="display:none;">Logout</button>
+    <button id="profileButton" style="display:none;" onclick="showProfile()">My Profile</button>
 
-    
+
+    <div id="userProfile" style="display:none;">
+        <h2>My Profile</h2>
+        <div id="myRecipes">
+            <h3>My Recipes</h3>
+            <div id="userRecipesList"></div>
+        </div>
+        <div id="myFavorites">
+            <h3>My Favorites</h3>
+            <div id="userFavoritesList"></div>
+        </div>
+    </div>
+
     <div id="filterOptions">
         <select id="recipeCategorySelect">
             <option value="">Select Recipe Category</option>
