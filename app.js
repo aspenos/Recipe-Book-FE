@@ -283,11 +283,34 @@ function displayUserRecipes(recipes) {
         div.innerHTML = `
             <h4>${recipe.name}</h4>
             <p>${recipe.description}</p>
+            <button onclick="deleteRecipe('${recipe._id}')">Delete Recipe</button>
             <button onclick="showEditInstructionsForm('${recipe._id}', \`${recipe.instructions.join('\n')}\`)">Edit Instructions</button>
         `;
         container.appendChild(div);
     });
 }
+
+function deleteRecipe(recipeId) {
+    const token = sessionStorage.getItem('token');
+    fetch(`http://localhost:3000/recipes/${recipeId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            alert('Recipe deleted successfully!');
+            showProfile(); // Refresh the profile to update the list
+        } else {
+            alert('Failed to delete recipe.');
+        }
+    }).catch(error => {
+        console.error('Error deleting recipe:', error);
+        alert('Failed to delete recipe.');
+    });
+}
+
 
 function showEditInstructionsForm(recipeId, instructions) {
     document.getElementById('instructions-input').value = instructions; // Set the current instructions in the textarea
@@ -339,7 +362,32 @@ function displayUserFavorites(favorites) {
     container.innerHTML = ''; // Clear previous contents
     favorites.forEach(favorite => {
         const div = document.createElement('div');
-        div.innerHTML = `<h4>${favorite.name}</h4><p>${favorite.description}</p>`;
+        div.innerHTML = `
+            <h4>${favorite.name}</h4>
+            <p>${favorite.description}</p>
+            <button onclick="removeFromFavorites('${favorite._id}')">Remove from Favorites</button>
+        `;
         container.appendChild(div);
+    });
+}
+
+function removeFromFavorites(recipeId) {
+    const token = sessionStorage.getItem('token');
+    fetch(`http://localhost:3000/users/${sessionStorage.getItem('userId')}/favorites/${recipeId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            alert('Removed from favorites successfully!');
+            showProfile(); // Refresh the favorites list
+        } else {
+            alert('Failed to remove from favorites.');
+        }
+    }).catch(error => {
+        console.error('Error removing from favorites:', error);
+        alert('Failed to remove from favorites.');
     });
 }
