@@ -2,6 +2,23 @@ body {
     font-family: Arial, sans-serif;
 }
 
+h1 {
+    text-align: center;  /* Centers the title on the page */
+    margin-top: 20px;    /* Adds some space on top */
+    font-size: 48px;     /* Larger font size */
+    color: #4A90E2;      /* A nice blue color */
+    font-family: 'Georgia', serif; /* A more elegant font */
+    text-shadow: 2px 2px 4px #aaa; /* Adds shadow for depth */
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontally centers the content in a flex container */
+    justify-content: center; /* Vertically centers the content in a flex container */
+    width: 100%; /* Optional: sets the width to full container width */
+}
+
 #recipes > div {
     border: 1px solid #ccc;
     margin: 10px;
@@ -13,4 +30,22 @@ body {
     cursor: pointer;
     color: blue; 
     text-decoration: underline;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+#filterOptions {
+    margin-top: 20px;
 }

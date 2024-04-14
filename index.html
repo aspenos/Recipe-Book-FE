@@ -4,8 +4,28 @@
     <meta charset="UTF-8">
     <title>Recipe Book</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        #login-form, #signup-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Horizontally centers the content in a flex container */
+            justify-content: center; /* Vertically centers the content in a flex container */
+            width: 100%; /* Optional: sets the width to full container width */
+        }
+
+        /* Styling for the login and signup inputs and buttons */
+        #login-form input, #login-form button,
+        #signup-form input, #signup-form button {
+            width: 80%; /* Set a specific width or use max-width for responsiveness */
+            padding: 8px; /* Add padding for better text visibility */
+            margin: 10px auto; /* Centers the form items and adds spacing */
+        }
+    </style>
+
 </head>
 <body>
+    
     <h1>Recipe Book</h1>
     <button id="browseRecipes">Browse Recipes</button>
     <div id="recipesList"></div> <!-- Make sure each ID is unique -->
@@ -23,8 +43,8 @@
         <button id="signup-submit">Signup</button>
     </div>
 
-    <button id="show-login" style="display:block;">Show Login Form</button>
-    <button id="show-signup" style="display:block;">Show Signup Form</button>
+    <button id="show-login" style="display:block;">Login</button>
+    <button id="show-signup" style="display:block;">Signup</button>
     <button id="logoutButton" style="display:none;">Logout</button>
     <button id="profileButton" style="display:none;" onclick="showProfile()">My Profile</button>
 
@@ -51,20 +71,15 @@
 
     <button id="show-recipe-form">Add New Recipe</button>
 
-    <div id="recipe-form" style="display:none;">
-        <form id="recipe-input-form"> <!-- Wrap the inputs in a form element -->
-            <input type="text" id="recipe-name" placeholder="Recipe Name">
-            <textarea id="recipe-description" placeholder="Recipe Description"></textarea>
-            <textarea id="recipe-instructions" placeholder="Instructions (separate steps with a newline)"></textarea>
-            <input type="text" id="recipe-ingredients" placeholder="Ingredients (comma-separated)">
-            <select id="recipe-categories" multiple>
-                <!-- Dynamically filled options -->
-            </select>
-            <select id="recipe-allergens" multiple>
-                <!-- Dynamically filled options -->
-            </select>
-            <input type="text" id="recipe-image" placeholder="Image URL">
-            <button type="submit" id="add-recipe">Add Recipe</button>
+    <div id="recipe-form" style="display:none; align-items: center; flex-direction: column;">
+        <form id="recipe-input-form" style="display: flex; flex-direction: column; width: 100%; align-items: center; margin-top: 20px;">
+            <input type="text" id="recipe-name" placeholder="Recipe Name" style="margin: 10px; width: 80%;">
+            <textarea id="recipe-description" placeholder="Recipe Description" style="margin: 10px; width: 80%;"></textarea>
+            <textarea id="recipe-instructions" placeholder="Instructions (separate steps with a newline)" style="margin: 10px; width: 80%;"></textarea>
+            <input type="text" id="recipe-ingredients" placeholder="Ingredients (comma-separated)" style="margin: 10px; width: 80%;">
+           
+            <input type="text" id="recipe-image" placeholder="Image URL" style="margin: 10px; width: 80%;">
+            <button type="submit" id="add-recipe" style="margin: 10px; width: 80%;">Add Recipe</button>
         </form>
     </div>
     
@@ -76,9 +91,6 @@
             <button type="submit" onclick="submitUpdatedInstructions()">Update Instructions</button>
         </form>
     </div>
-    
-
-
     <script src="app.js"></script>
 </body>
 </html>
