@@ -39,13 +39,16 @@ document.getElementById('login-submit').addEventListener('click', function() {
         if(data.token) {
             // Store the token for future requests
             sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('userId', data.userId);
+            alert('Logged in successfully!');
             // Update UI
             document.getElementById('login-form').style.display = 'none';
             document.getElementById('signup-form').style.display = 'none';
             document.getElementById('show-login').style.display = 'none';
             document.getElementById('show-signup').style.display = 'none';
             document.getElementById('logoutButton').style.display = 'block';
-            alert('Logged in successfully!');
+            displayRecipes();
+            
         } else {
             alert('Failed to log in. Please check your credentials.');
         }
@@ -125,20 +128,25 @@ function fetchFilteredRecipes() {
         .catch(console.error);
 }
 
-function displayRecipes(recipes) {
+function displayRecipes(recipes = []) { // Set a default parameter to ensure it's always an array
     const recipesListContainer = document.getElementById('recipesList');
     recipesListContainer.innerHTML = ''; // Clear previous contents
-    recipes.forEach(recipe => {
-        const recipeDiv = document.createElement('div');
-        recipeDiv.className = 'recipe';
-        recipeDiv.innerHTML = `
-            <h3>${recipe.name}</h3>
-            <p>${recipe.description}</p>
-            <img src="${recipe.image}" alt="${recipe.name}">
-            <button onclick="fetchRecipeDetails('${recipe._id}')">View Details</button>
-        `;
-        recipesListContainer.appendChild(recipeDiv);
-    });
+    if (recipes.length > 0) {
+        recipes.forEach(recipe => {
+            const recipeDiv = document.createElement('div');
+            recipeDiv.className = 'recipe';
+            recipeDiv.innerHTML = `
+                <h3>${recipe.name}</h3>
+                <p>${recipe.description}</p>
+                <img src="${recipe.image}" alt="${recipe.name}">
+                <button onclick="fetchRecipeDetails('${recipe._id}')">View Details</button>
+                ${sessionStorage.getItem('token') ? `<button onclick="addFavorite('${recipe._id}')">Favorite</button>` : ''} 
+            `; // Conditionally display the Favorite button based on token presence
+            recipesListContainer.appendChild(recipeDiv);
+        });
+    } else {
+        recipesListContainer.innerHTML = '<p>No recipes found.</p>'; // Display a message if no recipes are available
+    }
 }
 
 function fetchRecipeDetails(recipeId) {
@@ -161,4 +169,28 @@ function displayRecipeDetails(recipe) {
     `;
     detailsDiv.style.display = 'block';
     window.location.href = '#recipeDetails'; // Scrolls to the details section
+}
+
+function addFavorite(recipeId) {
+    const userId = sessionStorage.getItem('userId'); // Ensure userId is stored during login
+    const token = sessionStorage.getItem('token');
+
+    fetch(`http://localhost:3000/users/${userId}/favorites/${recipeId}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to add to favorites');
+        return response.json();
+    })
+    .then(data => {
+        alert('Recipe added to favorites!');
+    })
+    .catch(error => {
+        console.error('Error adding favorite:', error);
+        alert('Failed to add favorite. Please try again.');
+    });
 }
