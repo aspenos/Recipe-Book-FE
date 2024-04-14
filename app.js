@@ -99,6 +99,58 @@ document.getElementById('logoutButton').addEventListener('click', function() {
     window.location.href = '/'; // Redirects to the home page
 });
 
+document.getElementById('show-recipe-form').addEventListener('click', () => {
+    document.getElementById('recipe-form').style.display = 'block';
+});
+
+document.getElementById('add-recipe').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent the form from submitting traditionally, which refreshes the page
+    const name = document.getElementById('recipe-name').value;
+    const description = document.getElementById('recipe-description').value;
+    const instructions = document.getElementById('recipe-instructions').value.split('\n');
+    const ingredients = document.getElementById('recipe-ingredients').value.split(',').map(ingredient => ingredient.trim());
+    const categories = Array.from(document.getElementById('recipe-categories').selectedOptions).map(option => option.value);
+    const allergens = Array.from(document.getElementById('recipe-allergens').selectedOptions).map(option => option.value);
+    const image = document.getElementById('recipe-image').value;
+
+    const recipeData = {
+        name,
+        description,
+        instructions,
+        ingredients,
+        categories,
+        allergens,
+        image
+    };
+
+    const token = sessionStorage.getItem('token');  // Retrieve the stored token
+
+    fetch('http://localhost:3000/recipes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`  // Include the token in the request header
+        },
+        body: JSON.stringify(recipeData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.name) {  // Assuming the response will have the recipe name if successful
+            alert('Recipe added successfully!');
+            document.getElementById('recipe-input-form').reset();  // Resetting the form
+            document.getElementById('recipe-form').style.display = 'none';  // Hiding the form
+        } else {
+            alert('Failed to add recipe. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error adding recipe:', error);
+    });
+});
+
+
+
+
 
 function fetchAllRecipes() {
     fetch('http://localhost:3000/recipes')

@@ -48,6 +48,26 @@
         <button id="filterButton">Apply Filter</button>
     </div>
     <div id="recipeDetails" style="display: none;"></div> 
+
+    <button id="show-recipe-form">Add New Recipe</button>
+
+    <div id="recipe-form" style="display:none;">
+        <form id="recipe-input-form"> <!-- Wrap the inputs in a form element -->
+            <input type="text" id="recipe-name" placeholder="Recipe Name">
+            <textarea id="recipe-description" placeholder="Recipe Description"></textarea>
+            <textarea id="recipe-instructions" placeholder="Instructions (separate steps with a newline)"></textarea>
+            <input type="text" id="recipe-ingredients" placeholder="Ingredients (comma-separated)">
+            <select id="recipe-categories" multiple>
+                <!-- Dynamically filled options -->
+            </select>
+            <select id="recipe-allergens" multiple>
+                <!-- Dynamically filled options -->
+            </select>
+            <input type="text" id="recipe-image" placeholder="Image URL">
+            <button type="submit" id="add-recipe">Add Recipe</button>
+        </form>
+    </div>
+    
    
 
 
