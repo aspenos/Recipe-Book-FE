@@ -279,10 +279,47 @@ function displayUserRecipes(recipes) {
     container.innerHTML = ''; // Clear previous contents
     recipes.forEach(recipe => {
         const div = document.createElement('div');
-        div.innerHTML = `<h4>${recipe.name}</h4><p>${recipe.description}</p>`;
+        div.className = 'recipe';
+        div.innerHTML = `
+            <h4>${recipe.name}</h4>
+            <p>${recipe.description}</p>
+            <button onclick="showEditInstructionsForm('${recipe._id}', \`${recipe.instructions.join('\n')}\`)">Edit Instructions</button>
+        `;
         container.appendChild(div);
     });
 }
+
+function showEditInstructionsForm(recipeId, instructions) {
+    document.getElementById('instructions-input').value = instructions; // Set the current instructions in the textarea
+    document.getElementById('edit-recipe-id').value = recipeId; // Store the recipe ID in a hidden input
+    document.getElementById('edit-instructions-form').style.display = 'block'; // Show the form
+}
+
+function submitUpdatedInstructions() {
+    const recipeId = document.getElementById('edit-recipe-id').value;
+    const updatedInstructions = document.getElementById('instructions-input').value;
+
+    fetch(`http://localhost:3000/recipes/${recipeId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ instructions: updatedInstructions })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Instructions updated successfully!');
+        document.getElementById('edit-instructions-form').style.display = 'none'; // Hide the form
+        showProfile(); // Optionally refresh the profile to show updated info
+    })
+    .catch(error => {
+        console.error('Failed to update instructions:', error);
+        alert('Failed to update instructions.');
+    });
+}
+
+
 
 function fetchUserFavorites(userId, token) {
     fetch(`http://localhost:3000/users/${userId}/favorites`, {

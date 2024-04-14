@@ -68,7 +68,15 @@
         </form>
     </div>
     
-   
+    <div id="edit-instructions-form" style="display:none;">
+        <form>
+            <h3>Edit Instructions</h3>
+            <textarea id="instructions-input" placeholder="Update instructions here..."></textarea>
+            <input type="hidden" id="edit-recipe-id">
+            <button type="submit" onclick="submitUpdatedInstructions()">Update Instructions</button>
+        </form>
+    </div>
+    
 
 
     <script src="app.js"></script>
